@@ -1,0 +1,415 @@
+---
+title: "DPH206_final"
+author: "Wanqi Wang"
+date: "30/05/2020"
+output: html_document
+---
+
+# Data preparation
+## Hygienic city
+
+```{r}
+require(tidyverse)
+Sys.setlocale('LC_ALL', "chinese")
+```
+
+There is 93 reconfirm hygienic cities in China in 2018 from the review of National Health Commisson of the People's Republic of China.
+
+("怀柔区"、"平谷区"、"通州区"、"天安门地区" are analysed as "北京", so there is 90 cities in our dataset )
+
+```{r}
+cityname<-c('北京市','晋城市','潞城市','赤峰市','鄂尔多斯市','包头市','大连市','延吉市','珲春市','伊春市','上海市','无锡市','苏州市','南通市','淮安市','扬州市','泰州市','江阴市','昆山市','常熟市','太仓市','海门市','张家港市','仪征市','如皋市','杭州市','绍兴市','舟山市','桐乡市','海宁市','马鞍山市','铜陵市','福州市','厦门市','三明市','青岛市','淄博市','烟台市','泰安市','威海市','莱芜市','临沂市','德州市','聊城市','滨州市','莱州市','招远市','蓬莱市','青州市','洛阳市','安阳市','濮阳市','平顶山市','登封市','荥阳市','新郑市','舞钢市','十堰市','常德市','深圳市','珠海市','汕头市','佛山市','肇庆市','惠州市','梅州市','河源市','中山市','南宁市','桂林市','重庆市','成都市','绵阳市','泸州市','广安市','贵阳市','凯里市','昆明市','玉溪市','安宁市','芒市','咸阳市','渭南市','金昌市','格尔木市','银川市','青铜峡市','阿克苏市','库尔勒市','昌吉市')
+```
+
+```{r}
+hc<- matrix(cityname) %>% as.tibble()
+hc$hyg<-c(rep(1, times=length(hc)))
+```
+
+
+## Epidemic data
+
+```{r}
+require(tidyverse)
+require(magrittr)
+require(nCov2019)
+epicity <- load_nCov2019(lang = 'zh', source='github') %$% .$data
+```
+
+
+```{r}
+epicity$city2 <- ifelse(epicity$province %in% c("北京","上海","重庆","天津"), epicity$province, epicity$city)
+```
+
+
+```{r}
+epicity$city2<-paste0(epicity$city2, "市") 
+epicity$city2<-gsub('恩施州市', '恩施土家族苗族自治州', epicity$city2)
+epicity$city2<-gsub('恩施市', '恩施土家族苗族自治州', epicity$city2)
+```
+
+
+```{r}
+# How silly i was
+#epicity$city3<-epicity$city2 %>% gsub('外地来京市','北京市',.) %>% gsub('外地来沪市','上海市',.) %>%
+#gsub('西城市','北京市',.) %>%
+#gsub('丰台市','北京市',.) %>%  
+#gsub('海淀市','北京市',.) %>%
+#gsub('通州市','北京市',.) %>%
+#gsub('昌平市','北京市',.) %>%
+#gsub('大兴市','北京市',.) %>%
+#gsub('朝阳市','北京市',.) %>%
+#gsub('石景山市','北京市',.) %>%
+#gsub('顺义市','北京市',.) %>%
+#gsub('东城市','北京市',.) %>%
+#gsub('待确认市','北京市',.) %>%
+#gsub('万州区市','重庆市',.) %>%
+#gsub('长寿区市','重庆市',.) %>%
+#gsub('巫山县市','重庆市',.) 
+```
+
+
+## Move out data
+```{r}
+usethis::edit_r_environ()
+```
+
+Then add the amap key and restart R
+```{r}
+Sys.getenv('amap.key')
+```
+
+Go to website -> right click -> view page source
+
+Go to website -> fn_f12 ->network->js -> cityrank
+
+```{r}
+library(hrbrthemes)
+```
+
+
+
+
+```{r}
+library(jsonlite)
+curve<-readLines('http://huiyan.baidu.com/migration/historycurve.jsonp?dt=city&id=420100&type=move_out&callback=')%>% str_remove_all("[\\(\\)]") %>%
+  fromJSON()%>%
+  .[['data']] %>%
+  .[['list']] %>%
+  as.tibble()
+```
+
+
+OKAY, then make a loop to get everyday's data
+```{r}
+x<-c('https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200110&callback=', 'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200111&callback=', 'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200112&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200113&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200114&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200115&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200116&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200117&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200118&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200119&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200120&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200121&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200122&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200123&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200124&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200125&callback=')
+```
+
+```{r}
+for (i in x){
+  names<-substr(i,88,95)
+  assign(names,
+  readLines(i) %>% 
+  str_remove_all("[\\(\\)]") %>%
+  fromJSON() %>%
+  .[['data']] %>%
+  .[['list']] %>%
+  as_tibble() )
+}
+```
+
+Excellent!
+Don't forget that we need a total move out measures. Average or sum of all 16 days is not suitable, note that the value in move out data is the percentage. So we need to adjusted by everyday's total move out data, which is "curve" dataset we had get at the begining of this section. 
+
+Get the index everyday
+
+```{r}
+index<-curve %>% as.data.frame()
+n1<-index[1,101]
+n2<-index[1,102]
+n3<-index[1,103]
+n4<-index[1,104]
+n5<-index[1,105]
+n6<-index[1,106]
+n7<-index[1,107]
+n8<-index[1,108]
+n9<-index[1,109]
+n10<-index[1,110]
+n11<-index[1,111]
+n12<-index[1,112]
+n13<-index[1,113]
+n14<-index[1,114]
+n15<-index[1,115]
+n16<-index[1,116]
+```
+
+
+Multiple acoording number at each day's dataset
+"avalue" means adjusted value 
+10-25
+```{r}
+`20200110`$avalue1<-`20200110`$value*n1
+`20200111`$avalue2<-`20200111`$value*n2
+`20200112`$avalue3<-`20200112`$value*n3
+`20200113`$avalue4<-`20200113`$value*n4
+`20200114`$avalue5<-`20200114`$value*n5
+`20200115`$avalue6<-`20200115`$value*n6
+`20200116`$avalue7<-`20200116`$value*n7
+`20200117`$avalue8<-`20200117`$value*n8
+`20200118`$avalue9<-`20200118`$value*n9
+`20200119`$avalue10<-`20200119`$value*n10
+`20200120`$avalue11<-`20200120`$value*n11
+`20200121`$avalue12<-`20200121`$value*n12
+`20200122`$avalue13<-`20200122`$value*n13
+`20200123`$avalue14<-`20200123`$value*n14
+`20200124`$avalue15<-`20200124`$value*n15
+`20200125`$avalue16<-`20200125`$value*n16
+```
+
+
+Combine each day's dataset
+You know, each dataset may contain different cities, because each dataset is the top 100 move out city from Wuhan. It's not a easy work!!!
+```{r}
+xdata<-c("`20200110`","`20200111`","`20200112`","`20200113`","`20200114`","`20200115`","`20200116`","`20200117`","`20200118`","`20200119`","`20200120`","`20200121`","`20200122`","`20200123`","`20200124`","`20200125`")
+```
+
+
+
+```{r}
+qqdata <- `20200110` %>% 
+ merge(.,`20200111`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%
+ merge(.,`20200112`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200113`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200114`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200115`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200116`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200117`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200118`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200119`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200120`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200121`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200122`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200123`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200124`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200125`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) 
+```
+
+Excellent
+
+Get a total index
+
+```{r}
+qqdata$total<- rowSums(cbind(qqdata$avalue1,qqdata$avalue2,qqdata$avalue3,qqdata$avalue4,qqdata$avalue5,qqdata$avalue6,qqdata$avalue7,qqdata$avalue8,qqdata$avalue9,qqdata$avalue10,qqdata$avalue11,qqdata$avalue12,qqdata$avalue13,qqdata$avalue14,qqdata$avalue15,qqdata$avalue16,qqdata$avalue17,qqdata$avalue18,qqdata$avalue19,qqdata$avalue20,qqdata$avalue21,qqdata$avalue22,qqdata$avalue23,qqdata$avalue24,qqdata$avalue25),na.rm = TRUE)
+```
+
+```{r}
+summary(qqdata$total)
+```
+
+make it as factor
+
+```{r}
+quantile(qqdata$total)
+```
+
+
+```{r}
+qqdata$risk <- 
+ifelse(qqdata$total<as.numeric(quantile(qqdata$total)[2]),"1", ifelse(qqdata$total<as.numeric(quantile(qqdata$total)[3]),"2",
+ifelse(qqdata$total<as.numeric(quantile(qqdata$total)[4]),"3","4")))
+table(qqdata$risk)
+```
+
+
+
+Great, now we get three main datasets we need. Then next step let's combine them to one dataset
+
+# Dataset combination
+
+```{r}
+mydata <- merge(epicity,hc, by.x="city2", by.y = "V1", all.x=TRUE)
+```
+
+You see, 1 is national hygienic city, NA is not. Nice, then we replace NA as 0, who is not national hygienic city.
+
+```{r}
+mydata$hyg[is.na(mydata$hyg)] <- 0
+```
+
+Great, let's combine it with move out data.
+
+```{r}
+myqqdata <- merge(mydata,qqdata,by.x="city2", by.y = "city_name", all.x=TRUE)
+```
+
+```{r}
+myqqdata$total[is.na(myqqdata$total)] <- 0
+```
+
+# Visualization
+
+I learned from my statistics class:  always visualize your data before statistics tests and modeling.
+
+## Move out trend by date
+
+
+```{r}
+tcurve<-t(curve) %>% as.data.frame() %>% tibble::rownames_to_column(., "date") 
+tcurve$date2<-as.Date(tcurve$date, format="%Y%m%d") 
+```
+
+Nice, then I am going to make a plot!
+
+When make this plot, maybe we need to change locale to english, otherwise date is Chinese. 
+
+```{r}
+Sys.setlocale('LC_ALL', "English")
+```
+
+
+```{r}
+plot1<-tcurve %>%
+  filter(date2>as.Date("2020-01-01")) %>%
+  filter(date2<as.Date("2020-03-15")) %>%  ggplot() + geom_line(aes(x = date2, y = V1),size = 0.8, col="red") + geom_point(aes(x = date2, y = V1), col = "black") +xlab("Date") +ylab("Index of move-out strength of Wuhan") + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(),
+panel.background = element_blank(),
+axis.line = element_line(colour = "black"))
+plot1
+```
+
+I found that, make point on the line looks better, which is geom_line()+geom_point(), rather than geom_point()+geom_line()
+
+## represent the top move out cities from Wuhan
+```{r}
+Sys.setlocale('LC_ALL', "Chinese")
+```
+
+```{r}
+options(scipen=200)
+topcity<-head(qqdata[order(qqdata$total,decreasing=T),],.1*nrow(qqdata))
+topcity
+```
+
+```{r}
+topcity$city_name
+```
+
+```{r}
+DT::datatable(topcity[,c("city_name","province_name.x","total")],caption = "Top move-out cities from Wuhan")
+```
+
+
+```{r}
+require(REmap)
+mapNames("湖北")
+```
+
+```{r}
+load('data/ProvinceMapDatas.Rda')
+```
+
+
+```{r}
+hubei<-df_China %>% filter(NAME=="湖北") 
+```
+
+```{r}
+ggplot() + geom_polygon(data = df_China, aes(x = long, y = lat, group = interaction(class, group)), colour = "white", fill="seagreen1") + geom_polygon(data = hubei, aes(x = long, y = lat, group = interaction(class, group)), fill = "pink") + geom_text(aes(x=112.31, y= 31.52), label="Hubei")+ 
+  geom_rect(aes(xmin = 124, xmax = 124 + 9.3, ymin = 16 - 0.3, ymax = 16 + 9), fill = NA, colour = "black", size = 0.25) + geom_line(data = df_NanHaiLine, aes(x = long, y = lat, group = ID), colour = "grey40", size = 1) + coord_map() + ylim(14, 54) + theme(axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_blank(), legend.position = c(0.85, 0.4), legend.title = element_blank(), legend.background = element_blank(), plot.title = element_text(hjust = 0.5,size = 16, face = "bold", color = "black")) 
+```
+
+
+
+```{r}
+require(leafletCN)
+tem<-demomap("china")
+demomap("湖北")
+```
+
+
+```{r}
+shiyan<-epicity %>% filter(city2=="十堰市") 
+tianmen<-epicity %>% filter(city2=="天门市") 
+```
+
+```{r}
+Sys.setlocale('LC_ALL', "English")
+ggplot() + geom_point(data = shiyan, aes(x = time, y = cum_confirm, color = "Cumulative diagnosis cases in Shiyan")) + geom_point(data = tianmen, aes(x = time, y = cum_confirm, color = "Cumulative diagnosis cases in Tianmen")) + labs(y = "Cases",x="Date", color = "Legend") + scale_colour_manual( values=c(`Cumulative diagnosis cases in Shiyan` = "red", `Cumulative diagnosis cases in Tianmen` = "blue"))+
+  geom_line(data = shiyan,aes(x = time, y = cum_confirm),size = 0.8, col="red")+ geom_line(data = tianmen,aes(x = time, y = cum_confirm),size = 0.8, col="blue")
+
+```
+
+Don't worry, it's just one case
+
+
+
+OK, let's start!
+
+```{r}
+myqqdata$hygc<- as.character(myqqdata$hyg)
+fmyqqdata<-myqqdata %>% filter(city2!="武汉市")%>% filter(city!="境外输入") %>%
+filter(province!= "香港") %>%
+filter(province!= "澳门") %>%
+filter(province!= "台湾") %>%
+filter(city!= "监狱系统") %>%
+filter(city!= "济宁")
+```
+
+
+
+
+```{r}
+fmyqqdata$risk[is.na(fmyqqdata$risk)] <- 0
+bp1 <- fmyqqdata%>% filter(time==as.Date("2020-04-13")) %>% ggplot(aes(x=risk, y=log(cum_confirm), fill=hygc)) + geom_boxplot()
+```
+
+
+```{r}
+fmyqqdata$risk[is.na(fmyqqdata$risk)] <- 0
+bp2 <- fmyqqdata%>% filter(time==as.Date("2020-04-13")) %>% ggplot(aes(x=risk, y=log(cum_confirm), fill=hygc)) + geom_violin()
+```
+
+```{r}
+bp1
+```
+
+```{r}
+bp2
+```
+
+
+```{r}
+q1 <- fmyqqdata %>%  filter(total<as.numeric(quantile(qqdata$total)[2])) %>%  ggplot() + geom_point(aes(time, cum_confirm, color = hygc)) + geom_line(aes(time, cum_confirm, group=city2),alpha=0.3)
+q1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+library(baidugeo)
+bmap_set_key("bGrBwAnEdBReoM44qcURi2jKMm8hOmSG")
+```
+
+
+```{r}
+options(remap.ak = "bGrBwAnEdBReoM44qcURi2jKMm8hOmSG")
+```
+
+
+
+
+
+
+# Modeling
+
+ok...now let's go to linear regression
+linear regression

@@ -1,0 +1,10 @@
+"0","Sys.setlocale('LC_ALL', ""English"")"
+"1","[1]"
+"1"," ""LC_COLLATE=English_United States.1252;LC_CTYPE=English_United States.1252;LC_MONETARY=English_United States.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252"""
+"1","
+"
+"0","source(""R/analysis.R"")"
+"2","cannot open file 'R/analysis.R': No such file or directory"
+"2","Error in file(filename, ""r"", encoding = encoding) : 
+  cannot open the connection
+"

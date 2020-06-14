@@ -1,0 +1,276 @@
+---
+title: "Influence of Chinese city's hygiene on SARS-CoV2 transmission"
+subtitle: "A retrospective analysis on transmission dynamics"
+author:
+  - Wanqi Wang
+institute: Xian Jiaotong-Liverpool University
+shortauthor: 
+  - Wang et al.
+date: "2020/06/03 (updated: `r Sys.Date()`)"
+chinese: false
+title_graphic_width: 0.3
+toc: true 
+pagenumber: true
+total_pagenumber_right: true
+total_pagenumber_left: false
+show_total_pagenumber: true
+navigation_empty: true
+aspectratio: 169 
+fontsize: 10pt
+notes: hide  
+note_page: plain 
+header-includes:
+  - \newcommand{\ct}{\tiny \textcolor{gray}}
+output: 
+  bookdown::beamer_presentation2: 
+    template: beamer_rosr.tex
+    keep_tex: yes
+    latex_engine: xelatex
+    slide_level: 2
+    theme: paloalto 
+    colortheme: default 
+    fonttheme: professionalfonts 
+  bookdown::word_document2: default
+  bookdown::html_document2: default
+always_allow_html: yes
+bibliography: slides.bib
+biblio-title: References
+---
+
+```{r md-hint, include=FALSE}
+# Markdown Syntax
+# - FORMAT  : *italic*, **bold**, `code`, ~subscript~, ^superscript^, > quote, ^[footnote] # - [](hyperlink)
+# - EQUATION: $inline equation$, $$display equation$$, \begin{equation} (\#eq:eq-label)\end(equation), \@ref(eq:eq-label)
+# - CITATION: [@bib-entry1; @bib-entry2]
+# - FIGURE  : ![](image link), knitr::include_graphics(), \@ref(fig:fig1)
+# - TABLE   : knitr::kable(), \@ref(tab:tab1)
+```
+
+```{r include=FALSE} 
+knitr::opts_chunk$set(echo = FALSE,message = FALSE, warning = FALSE) 
+```
+
+```{r wd}
+oldwd <- getwd()
+
+```
+
+```{r include=FALSE}
+Sys.setlocale('LC_ALL', "chinese")
+setwd(dirname(oldwd))
+source("R/analysis.R", encoding = "UTF-8")
+```
+
+
+# Motivation
+
+## Background
+
+ - Transmission dynamics of this emerging infectious disease haven't been fully understanded 
+ - Environment is closely related to human health
+ - A city's hygiene may have prominent influence of the SARS-CoV2 transmission.
+
+## My Aim
+
+ - Get the datasets which is sufficent and high-quality to conduct the analysis
+
+ - Evaluate how city's hygiene can impact the transmisstion dynamics of SARS-CoV-2.
+
+## Causality & Association
+
+Will eating ice-cream cause flood?
+
+```{r out.width='100%', fig.height=6}
+knitr::include_graphics('image/p1.PNG')
+```
+
+## Causality & Association
+
+Any guess of a third variable?
+
+```{r out.width='100%', fig.height=6}
+knitr::include_graphics('image/p1c.PNG')
+```
+
+
+## Causality & Association
+
+```{r out.width='100%', fig.height=6}
+knitr::include_graphics('image/p2.PNG')
+```
+
+# Methods
+
+## Study Design
+
+::::columns
+:::column
+
+ - Retrospective study
+ - Causal model 
+ - Multi-dataset
+ 
+     - Hygiene Data
+     - Epidemic Data
+     - Move-out Data
+ 
+:::
+:::column
+```{r out.width='100%', fig.height=8}
+knitr::include_graphics('image/p3.jpg')
+```
+:::
+::::
+ 
+
+
+## Measures of Hygiene
+
+**National hygienic city**
+  - Ninety three reconfirm national hygienic cities in China in 2018, this is the newested list of national hygienic city.([Source: National Health Commisson of the People's Republic of China; Date: Mar 20th, 2019](http://www.chinanews.com/gn/2019/03-20/8785718.shtml)). 
+   
+ - The asessment of national hygienic city has a comprehensive guideline on following items:
+ 
+     - Solid waste management
+     - Waste water management
+     - Coverage of green area and green area per capita
+     - Air Pollution Index (API) or Air Quality index (AQI) 
+     - Other seven items. 
+     - Full guideline can be download from the website of [National Health Commisson of the People's Republic of China.](http://www.nhc.gov.cn/jkj/s5898/201509/a758669061fd469aa3a754c8781acae4.shtml)
+
+
+## Measures of Epidemic outbreak
+
+**Total confirmed cases**
+
+  - [nCov2019 packages](https://github.com/GuangchuangYu/nCov2019).
+  
+  - Excluding infected arrivals from abroad
+
+## Measures of Move-Out from Wuhan
+
+**Move-out data before lockdown**
+
+  - [Baidu Qianxi](https://qianxi.baidu.com/2020/)
+  - Inspect elements
+  - 16 days (Jan 10,2020 - Jan 25,2020)
+  - Each city's move-out strength is presented as percentage
+  - Total move-out strength were adjusted by each day's move-out strength.
+
+# Findings
+
+
+## Move-out trend from Wuhan 
+```{r fig1, fig.cap="Move out trend from Wuhan"}
+plot1
+```
+
+## Top move-out cities are all in Hubei province
+ - Top move-out cities from Wuhan are all in Hubei province
+
+```{r fig2, fig.cap="Hubei in China"}
+plot2
+```
+
+## Hygienie of city and epidemic outbreak
+
+
+```{r out.width='100%', fig.height=6, fig3, fig.cap="A comparision of Tianmen and Shiyan"}
+plot3
+```
+
+## All cities outside Wuhan
+
+```{r out.width='100%', fig.height=6, fig4, fig.cap="A comparision of all cities outside Wuhan"}
+bp1
+```
+
+
+## All cities outside Wuhan
+```{r out.width='100%', fig.height=6, fig5, fig.cap="A comparision of all cities outside Wuhan"}
+bp2
+```
+
+
+# Summary
+## Conclusions 
+ - Lockdown of Wuhan City effectively cut-down the move-out from Wuhan City.
+ 
+ - Top 10% move-out cities from Jan 10,2020 to Jan 25,2020 are all in Hubei province
+ 
+ - National hygienic city may not have a better control of the epidemic
+ 
+ - However, the outliers with weak epidemic control, are more likely to be non- national hygienic city
+ 
+ - Still ongoing...
+
+## Future work
+
+ - Multi-way ANOVA
+ - Multiple linear regression
+ - Mortality & Inhospital time
+ - Detailed hygiene condition
+
+## Value and impact
+
+**Theorical implication**: how does hygiene impact the disease transmission, which will help to understand the transimission dynamics of the virus. 
+
+**Practical implication**: to evaluate the effectiveness of national hygienic cities, which will promote the city hygiene in China and beyond.
+
+## Limitations
+
+ - The transmission may start from New Year travel in early January
+ 
+ - The move-out data from Wuhan does not include transportation means
+ 
+ - Real performance of local government varies in response to this emerging infectious disease 
+ 
+
+ 
+## Acknowledgement 
+
+ - Baidu Qianxi
+ - ncovr and nCov2019 packages
+ 
+## References
+ 
+- Sievert, Carson. 2020. Interactive Web-Based Data Visualization with R, Plotly, and Shiny. Chapman; Hall/CRC. https://plotly-r.com.
+
+- Vanderkam, Dan, JJ Allaire, Jonathan Owen, Daniel Gromer, and Benoit Thieurmel. 2018. Dygraphs: Interface to ’Dygraphs’ Interactive Time Series Charting Library. https://CRAN.R-project.org/package=dygraphs.
+
+- Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. https://ggplot2.tidyverse.org.
+
+- Yu, Guangchuang. 2020. NCov2019: Stats of the ’2019-nCov’ Cases.
+
+- Zhao, Peng. 2019. Beginr: Functions for R Beginners. https://CRAN.R-project.org/package=beginr.
+
+- Zhao, Peng, Yi Zou, Lei Han, and Xinyuan Chu. 2020. Ncovr: Read and Process nCoV Data. https://github.com/pzhaonet/ncovr.
+
+# Q & A
+
+## I think you may ask?
+
+**Justification and Limitations**
+
+Q1: How's the GDP's influence on the disease transmission?
+A1: GDP may be related to move out data, and the move out data will be controlled adjusted in the data analysis. 
+
+Q2: Will the emerging public health response level in different city be an confounidng variable?
+Q2: No, other than the lockdown of Wuhan city, the policy in China are relatively consistent. Each city announce their emergency public health response level according to national standard. **However, we don't know if the real performance varies in each city's local government, this will be an limitation**. 
+
+Q3: Will the rural infected cases and rural hygiene be included in the analysis
+Q3: Yes, the assementent of national hygienic cities include the rural areas belong to this city. The rural infected cases also included in the total confirmed cases in a city. 
+
+## You may ask
+
+Q4: There is a time difference of the assement of national hygienic cities and epidemic outbreak, will it bias the results.
+A4: Not likely, because the assement based the whole year performance in 2018 and published at March, 2019, which is the newest version. The epidemic outside mainly start transmission at Spring Festival travel in 2020. The hygiene of a city is the long-term efforts of local goverment and citizens, the change can be neglected to change within one year.
+
+Q5: Will the transmission start from New Year travel in early January.
+A5: **Maybe, this will be an limitation**
+
+Q6: After the lockdown of Wuhan city, some people scape out Wuhan city secretly, will they be included in the move out data.
+A6: It's difficult to know them, but we assume the number are not too much
+
+
+

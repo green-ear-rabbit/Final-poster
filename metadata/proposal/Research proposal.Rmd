@@ -1,0 +1,63 @@
+---
+title: "Research proposal"
+author: "Wanqi Wang"
+date: "31/05/2020"
+output:
+  word_document: default
+  html_document: default
+---
+
+# Motivation
+
+Environment is closely related to human health. Also, a city's hygiene, which closely related to th elocal governance, can positively or negatively influence the health of citizens. The impaotance of a city's hygiene become prominent especailly when we come to infectious disease outbreak. 
+
+# Study Aims
+
+ - Get the datasets which is sufficent and high-quality to conduct the analysis
+
+ - Evaluate how city's hygiene can impact the transmisstion dynamics of SARS-CoV-2.
+ 
+
+# Study design
+
+This is a retrospective analysis of the epidemic transmission in early 2020. The hygiene of a city will be independent variable, the confirmed cases of COVID-19 will be dependent varaible. Because the main source of the early-stage outbreak is Wuhan, we use the move out data from Wuhan as counfounding variable (aka, covariates). 
+
+
+
+# Measures
+
+ - **National hygienic city**: there is 93 reconfirm national hygienic cities in China in 2018, this is the newested list of national hygienic city.([Source: National Health Commisson of the People's Republic of China; Date: Mar 20th, 2019](http://www.chinanews.com/gn/2019/03-20/8785718.shtml)). The asessment of national hygienic city has a comprehensive guideline on solid waste management, waste water management, coverage of green area and green area per capita, Air Pollution Index (API) or Air Quality index (AQI) and other seven items. Full guideline can be download from the website of [National Health Commisson of the People's Republic of China.](http://www.nhc.gov.cn/jkj/s5898/201509/a758669061fd469aa3a754c8781acae4.shtml)
+ 
+ - **Total confirmed cases**: total conformed cases of each city are obtained from [nCov2019 packages](https://github.com/GuangchuangYu/nCov2019).
+ 
+ - **Move out data from Wuhan**: data were obtained from [Baidu Qianxi](https://qianxi.baidu.com/2020/)
+
+# Statistics
+
+ - t-test (pure, not include coudounding varable)
+ - Multi-way ANOVA
+ - Multiple linear regression
+
+# Justification and Limitations
+Q1: How's the GDP's influence on the disease transmission?
+A1: GDP may be related to move out data, and the move out data will be controlled adjusted in the data analysis. 
+
+Q2: Will the emerging public health response level in different city be an confounidng variable?
+Q2: No, other than the lockdown of Wuhan city, the policy in China are relatively consistent. Each city announce their emergency public health response level according to national standard. **However, we don't know if the real performance varies in each city's local government, this will be an limitation**. 
+
+Q3: Will the rural infected cases and rural hygiene be included in the analysis
+Q3: Yes, the assementent of national hygienic cities include the rural areas belong to this city. The rural infected cases also included in the total confirmed cases in a city. 
+
+Q4: There is a time difference of the assement of national hygienic cities and epidemic outbreak, will it bias the results.
+A4: Not likely, because the assement based the whole year performance in 2018 and published at March, 2019, which is the newest version. The epidemic outside mainly start transmission at Spring Festival travel in 2020. The hygiene of a city is the long-term efforts of local goverment and citizens, the change can be neglected to change within one year.
+
+Q5: Will the transmission start from New Year travel in early January.
+A5: **Maybe, this will be an limitation**
+
+Q6: After the lockdown of Wuhan city, some people scape out Wuhan city secretly, will they be included in the move out data.
+A6: It's difficult to know them, but we assume the number are not too much
+
+# Value and Impact
+
+This research will have theorical implication of how does hygiene impact the disease transmission, which will help to understand the transimission dynamics of the virus. Moreover, it will have practical implication to evaluate the effectiveness of national hygienic cities, which will promote the city hygiene in China and beyond.
+ 
