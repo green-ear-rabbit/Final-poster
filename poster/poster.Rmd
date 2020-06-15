@@ -40,8 +40,7 @@ source("R/analysis.R", encoding = "UTF-8")
 ## Background
 
  - Transmission dynamics of this emerging infectious disease haven't been fully understood 
- 
- - Previous research shows the air quality may influence the virus transmission   [@li_air_2020;@iha_comparative_2016]
+ - Previous research shows the air quality may influence the virus transmission  
  
 ## Methods
 
@@ -84,6 +83,11 @@ bp1+theme(legend.title = element_text("qq"),legend.position = c(.95, .95),legend
 
 # {.col-3}
 
+## Conclusions
+ - Lockdown of Wuhan effectively cut-down its move-out.
+ - Top 10% move-out cities are from Jan are all in Hubei province
+ - The national hygienic city may not have significantly better control of the epidemic
+ - The outliers with weak epidemic control, are more likely to be non- national hygienic city
 
 
 ## Future work
@@ -93,11 +97,6 @@ bp1+theme(legend.title = element_text("qq"),legend.position = c(.95, .95),legend
  - The difference in mortality & recovery time
  - Detailed hygiene condition
 
-## Conclusions
- - Lockdown of Wuhan effectively cut-down its move-out.
- - Top 10% move-out cities are from Jan are all in Hubei province
- - The national hygienic city may not have significantly better control of the epidemic
- - The outliers with weak epidemic control, are more likely to be non- national hygienic city
 
 ## Limitations
 
@@ -107,7 +106,7 @@ bp1+theme(legend.title = element_text("qq"),legend.position = c(.95, .95),legend
 
 ## Contact 
 
-- Scan the QR code for this [project's website](https://green-ear-rabbit.github.io/website/) to find more information. - There is another version of interactive poster, click [here] to view the interactive poster and its source code on github.
+- Scan the QR code for this [project's website](https://green-ear-rabbit.github.io/website/) to find more information. - There is a version of interactive poster, click [here] to view the interactive poster and its source code on github.
 
 ```{r fig5, fig.cap=''}
 knitr::include_graphics('image/QR.png')

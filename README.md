@@ -1,14 +1,23 @@
 # DPH206_final
 
-Follow this step will be better to undersatnd
+## Poster Guide
 
-1. metadata-->proposal is the research proposal
+During the global outbreak of COVID-19, many research has been done on the epidemiological and clinical characteristics, predictive models and mode of the  transmission. This study aims to fill the literature gap of the overall city hygiene’s impact on virus transmission. 
+
+There are two versions of poster in this project
+
+1. Traditional poster: poster –> poster.pdf
+2. Interactive poster: poster (interactive) -> interactive-poster.html
+
+## Project Guide
+
+Follow this step will be better to understand
 
 2. R-->analysis.rmd is the data management which also include a reproducible instructions (e.g., how to get data from websites)
 
-3. slides floder is the presentation slides
+3. slides folder is the presentation slides
 
-4. poster floder is the poster of this project
+4. poster folder is the poster of this project
 
 5. website is the website I built for this project, https://green-ear-rabbit.github.io/website/ Please go to this website to find more information
 
