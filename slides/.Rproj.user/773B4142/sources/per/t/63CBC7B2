@@ -1,25 +1,24 @@
 {
-    "collab_server" : "",
-    "contents" : "",
-    "created" : 1591515245408.000,
-    "dirty" : false,
-    "encoding" : "UTF-8",
-    "folds" : "",
-    "hash" : "2157168916",
-    "id" : "63CBC7B2",
-    "lastKnownWriteTime" : 1591594522,
-    "last_content_update" : 1591594522649,
-    "path" : "C:/Users/Wanqi/Desktop/DPH206_final/slides/slides.Rmd",
-    "project_path" : "slides.Rmd",
-    "properties" : {
-        "cursorPosition" : "57,19",
-        "scrollLine" : "52"
+    "id": "63CBC7B2",
+    "path": "C:/Users/Wanqi/Desktop/DPH206_final/slides/slides.Rmd",
+    "project_path": "slides.Rmd",
+    "type": "r_markdown",
+    "hash": "5370385",
+    "contents": "",
+    "dirty": false,
+    "created": 1591515245408.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "cursorPosition": "70,14",
+        "scrollLine": "69"
     },
-    "read_only" : false,
-    "read_only_alternatives" : [
-    ],
-    "relative_order" : 1,
-    "source_on_save" : false,
-    "source_window" : "",
-    "type" : "r_markdown"
+    "folds": "",
+    "lastKnownWriteTime": 1592121636,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1592121636063,
+    "read_only": false,
+    "read_only_alternatives": []
 }

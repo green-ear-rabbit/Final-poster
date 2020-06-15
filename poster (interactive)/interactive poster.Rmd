@@ -1,0 +1,149 @@
+---
+title: "Influence of Chinese city's hygiene on the SARS-CoV-2 transmission"
+author: ["<span class=\"presenter\">Wanqi Wang<sup>1</sup></span>, Peng Zhao<sup>1, 2</sup><ol class=\"affiliations\"><li>Department of public health, Xi'an Jiaotong-Liverpool University, Suzhou, China</li><li>Department of Environmental science,Xi'an Jiaotong-Liverpool University, Suzhou</li></ol>"]
+output:
+  drposter::drposter_poster:
+    self_contained: false
+    css: style/custom.css
+    fill_page: true
+    bibliography: poster.bib
+    biblio-title: apalike
+---
+
+```{r set, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE) 
+```
+
+
+```{r wd}
+oldwd <- getwd()
+```
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE) 
+Sys.setlocale('LC_ALL', "chinese")
+setwd(dirname(oldwd))
+source("R/analysis.R", encoding = "UTF-8")
+```
+
+# {.col-3}
+
+ 
+## Value and impact
+
+**Theoretical implication**: how does hygiene impact the virus transmission, which will help to understand the transmission dynamics of the virus. 
+
+**Practical implication**: to evaluate the effectiveness of national hygienic cities, which will promote city hygiene in China and beyond.
+
+
+
+## Background
+
+ - Transmission dynamics of this emerging infectious disease haven't been fully understood 
+ 
+ - Previous research shows the air quality may influence the virus transmission   [@li_air_2020;@iha_comparative_2016]
+ 
+## Methods
+
+**National hygienic city**
+
+  - Ninety-three reconfirm national hygienic cities in China in 2018, this is the newest  list of national hygienic city. 
+
+**Total confirmed cases**
+
+  - nCov2019 packages
+  - Excluding infected arrivals from abroad
+
+**Move-out data before lockdown**
+
+  - Baidu Qianxi
+  - Inspect elements
+  - 16 days (Jan 10,2020 - Jan 25,2020)
+  - Each city's move-out strength is presented as a percentage
+  - Total move-out strength was adjusted by each day's move-out strength.
+
+
+# {.col-3}
+
+
+## Results 
+
+```{r include=FALSE}
+require(dygraphs) 
+require(xts) 
+tcurve2020<-tcurve %>%filter(date2>as.Date("2020-01-01")) %>% filter(date2<as.Date("2020-03-15"))
+diff(tcurve2020$date2) 
+```
+
+```{r include=FALSE}
+plot1a<-tcurve2020 %>% select(V1) %>% xts(tcurve2020$date2) %>% dygraph() %>% dyOptions(fillGraph = TRUE) %>% dyRangeSelector()%>%htmlwidgets::saveWidget()
+```
+<iframe seamless src="yourimage.html" width = "600" height="150" frameborder="0"></iframe>
+
+
+```{r fig1, fig.cap="Figure 1: Move out trend from Wuhan"}
+plot1a
+```
+
+
+```{r out.width='100%', fig.height=6, fig2, fig.cap="Figure 2: A comparision of Tianmen and Shiyan"}
+plotly::ggplotly(ptian)
+```
+
+
+```{r out.width='100%', fig.height=6, fig3, fig.cap="Figure 3: A comparision of all cities outside Wuhan"}
+plotly::ggplotly(bp1)
+```
+
+# {.col-3}
+
+
+
+## Future work
+
+ - Case-control match of hygienic cities and non-hygienic cities
+ - Multiple linear regression to total confirmed cases
+ - The difference in mortality & recovery time
+ - Detailed hygiene condition
+
+## Conclusions
+ - Lockdown of Wuhan effectively cut-down its move-out.
+ - Top 10% move-out cities from Jan are all in Hubei province
+ - The national hygienic city may not have significantly better control of the epidemic
+ - The outliers with weak epidemic control, are more likely to be non- national hygienic city
+
+## Limitations
+
+ - The transmission may start in early January, 2020 or earlier. 
+ - The move-out data from Wuhan does not include transportation means
+ - The real performance of local government varies in response to this emerging infectious disease 
+
+## Contact 
+
+Scan the QR code for this [project's website](https://green-ear-rabbit.github.io/website/) to find more information. 
+
+```{r fig5, fig.cap=''}
+knitr::include_graphics('image/QR.png')
+```
+
+
+- &#9993; Wanqi.Wang@xjtlu.student.xjtlu.edu.cn
+
+
+# {.col-2}
+
+## Acknowledgements
+
+Data were from [Baidu Qianxi](qianxi.baidu.com), Dr.Guangchuang Yu's [nCov2019 packages](https://github.com/GuangchuangYu/nCov2019), and [National Health Commission of the People's Republic of China.](http://www.nhc.gov.cn/jkj/s5898/201509/a758669061fd469aa3a754c8781acae4.shtml)  
+
+The poster template was from Dr.Peng Zhao's [xjtlu package](https://github.com/pzhaonet/xjtlu).
+
+Packages of [tidyverse](https://github.com/tidyverse), [leafletCN](https://github.com/Lchiffon/leafletCN), [plotly](https://github.com/ropensci/plotly), [knitr](https://github.com/yihui/knitr) were used in data analysis and visualization. 
+
+# {.col-2}
+
+## References
+
+
+
+

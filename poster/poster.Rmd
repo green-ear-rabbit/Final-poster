@@ -1,11 +1,13 @@
 ---
-title: "Influence of Chinese city's hygiene on the SARS-CoV2 transmission"
+title: "Influence of Chinese city's hygiene on the SARS-CoV-2 transmission"
 author: ["<span class=\"presenter\">Wanqi Wang<sup>1</sup></span>, Peng Zhao<sup>1, 2</sup><ol class=\"affiliations\"><li>Department of public health, Xi'an Jiaotong-Liverpool University, Suzhou, China</li><li>Department of Environmental science,Xi'an Jiaotong-Liverpool University, Suzhou</li></ol>"]
 output:
   drposter::drposter_poster:
     self_contained: false
     css: style/custom.css
     fill_page: true
+    bibliography: poster.bib
+    biblio-title: apalike
 ---
 
 ```{r set, include=FALSE}
@@ -26,23 +28,26 @@ source("R/analysis.R", encoding = "UTF-8")
 
 # {.col-3}
 
-## Conclusions
- - Lockdown of Wuhan effectively cut-down its move-out.
- - Top 10% move-out cities from Jan are all in Hubei province
- - National hygienic city may not have a significant better control of the epidemic
- - The outliers with weak epidemic control, are more likely to be non- national hygienic city
+ 
+## Value and impact
+
+**Theoretical implication**: how does hygiene impact the virus transmission, which will help to understand the transmission dynamics of the virus. 
+
+**Practical implication**: to evaluate the effectiveness of national hygienic cities, which will promote city hygiene in China and beyond.
+
 
 
 ## Background
 
- - Transmission dynamics of this emerging infectious disease haven't been fully understanded 
- - Previous research shows the air quality may influence the disease transmission 
+ - Transmission dynamics of this emerging infectious disease haven't been fully understood 
+ 
+ - Previous research shows the air quality may influence the virus transmission   [@li_air_2020;@iha_comparative_2016]
  
 ## Methods
 
 **National hygienic city**
 
-  - Ninety three reconfirm national hygienic cities in China in 2018, this is the newested list of national hygienic city. 
+  - Ninety-three reconfirm national hygienic cities in China in 2018, this is the newest  list of national hygienic city. 
 
 **Total confirmed cases**
 
@@ -54,8 +59,8 @@ source("R/analysis.R", encoding = "UTF-8")
   - Baidu Qianxi
   - Inspect elements
   - 16 days (Jan 10,2020 - Jan 25,2020)
-  - Each city's move-out strength is presented as percentage
-  - Total move-out strength were adjusted by each day's move-out strength.
+  - Each city's move-out strength is presented as a percentage
+  - Total move-out strength was adjusted by each day's move-out strength.
 
 
 # {.col-3}
@@ -63,44 +68,51 @@ source("R/analysis.R", encoding = "UTF-8")
 
 ## Results 
 
-```{r fig1, fig.cap="Move out trend from Wuhan"}
+```{r out.width='100%', fig.height=6, fig1,  fig.cap="Figure 1: Move out trend from Wuhan"}
 plot1
 ```
 
 
-```{r out.width='100%', fig.height=6, fig3, fig.cap="A comparision of Tianmen and Shiyan"}
-plot3
+```{r out.width='100%', fig.height=6, fig2, fig.cap="Figure 2: A comparision of Tianmen and Shiyan"}
+ptian
 ```
 
 
-```{r out.width='100%', fig.height=6, fig4, fig.cap="A comparision of all cities outside Wuhan"}
-bp1
+```{r out.width='100%', fig.height=6, fig3, fig.cap="Figure 3: A comparision of all cities outside Wuhan"}
+bp1+theme(legend.title = element_text("qq"),legend.position = c(.95, .95),legend.justification = c("right", "top"),legend.margin = margin(6, 6, 6, 6),panel.border = element_rect(colour = "black", fill=NA),aspect.ratio = 1, axis.text = element_text(colour = 1, size = 12),legend.background = element_blank(),legend.box.background = element_rect(colour = "black"))
 ```
 
 # {.col-3}
 
 
+
 ## Future work
 
- - Multi-way ANOVA
- - Case-control match of cities
- - Multiple linear regression
- - Mortality & Inhospital time
+ - Case-control match of hygienic cities and non-hygienic cities
+ - Multiple linear regression to total confirmed cases
+ - The difference in mortality & recovery time
  - Detailed hygiene condition
 
-## Value and impact
+## Conclusions
+ - Lockdown of Wuhan effectively cut-down its move-out.
+ - Top 10% move-out cities are from Jan are all in Hubei province
+ - The national hygienic city may not have significantly better control of the epidemic
+ - The outliers with weak epidemic control, are more likely to be non- national hygienic city
 
-**Theorical implication**: how does hygiene impact the disease transmission, which will help to understand the transimission dynamics of the virus. 
+## Limitations
 
-**Practical implication**: to evaluate the effectiveness of national hygienic cities, which will promote the city hygiene in China and beyond.
+ - The transmission may start in early January, 2020 or earlier. 
+ - The move-out data from Wuhan does not include transportation means
+ - The real performance of local government varies in response to this emerging infectious disease 
 
 ## Contact 
+
+- Scan the QR code for this [project's website](https://green-ear-rabbit.github.io/website/) to find more information. - There is another version of interactive poster, click [here] to view the interactive poster and its source code on github.
+
 ```{r fig5, fig.cap=''}
 knitr::include_graphics('image/QR.png')
 ```
 
-Scan the QR code for this project's website.
-</p>
 
 - &#9993; Wanqi.Wang@xjtlu.student.xjtlu.edu.cn
 
@@ -109,12 +121,19 @@ Scan the QR code for this project's website.
 
 ## Acknowledgements
 
-Many thanks to Dr.Peng Zhao for developing [drposter](https://github.com/pzhaonet/xjtlu).
+Data were from [Baidu Qianxi](qianxi.baidu.com), Dr.Guangchuang Yu's [nCov2019 packages](https://github.com/GuangchuangYu/nCov2019), and [National Health Commission of the People's Republic of China.](http://www.nhc.gov.cn/jkj/s5898/201509/a758669061fd469aa3a754c8781acae4.shtml)  
+
+The poster template was from Dr.Peng Zhao's [xjtlu package](https://github.com/pzhaonet/xjtlu).
+
+Packages of [tidyverse](https://github.com/tidyverse), [leafletCN](https://github.com/Lchiffon/leafletCN), [plotly](https://github.com/ropensci/plotly), [knitr](https://github.com/yihui/knitr) were used in data analysis and visualization. 
 
 # {.col-2}
 
 ## References
-Li H, Xu XL, Dai DW, Huang ZY, Ma Z, Guan YJ. Air Pollution and temperature are associated with increased COVID-19 incidence: a time series study [published online ahead of print, 2020 Jun 2]. Int J Infect Dis. 2020;S1201-9712(20)30383-0. doi:10.1016/j.ijid.2020.05.076
+1. Li H, Xu X-L, Dai D-W, Huang Z-Y, Ma Z, Guan Y-J. Air Pollution and temperature are associated with increased COVID-19 incidence: a time series study. International Journal of Infectious Diseases. Published online 2020. doi:10.1016/j.ijid.2020.05.076
+2. Iha Y, Kinjo T, Parrott G, Higa F, Mori H, Fujita J. Comparative epidemiology of influenza A and B viral infection in a subtropical region: a 7-year surveillance in Okinawa, Japan. BMC Infect Dis. 2016;16(1):650-650. doi:10.1186/s12879-016-1978-0
+
+
 
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Influence of Chinese city's hygiene on SARS-CoV2 transmission"
+title: "Influence of Chinese city's hygiene on SARS-CoV-2 transmission"
 subtitle: "A retrospective analysis on transmission dynamics"
 author:
   - Wanqi Wang
@@ -68,7 +68,7 @@ source("R/analysis.R", encoding = "UTF-8")
 
  - Transmission dynamics of this emerging infectious disease haven't been fully understanded 
  - Environment is closely related to human health
- - A city's hygiene may have prominent influence of the SARS-CoV2 transmission.
+ - A city's hygiene may have prominent influence of the SARS-CoV-2 transmission.
 
 ## My Aim
 

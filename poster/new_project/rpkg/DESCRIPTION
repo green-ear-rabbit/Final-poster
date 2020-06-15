@@ -1,0 +1,16 @@
+Package: rpkg
+Version: 0.0.0
+Title: A New R Package 
+Author: Peng Zhao <pzhao@pzhao.net>
+Maintainer: Peng Zhao <pzhao@pzhao.net>
+Depends: R (>= 3.1.0)
+Imports:
+Suggests:
+Description: An R package
+License: GPL
+URL: https://github.com/pzhaonet/rmickey
+BugReports: https://github.com/pzhaonet/rmickey/issues
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1
+NeedsCompilation: no
+LazyData: true
