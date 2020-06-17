@@ -40,8 +40,7 @@ source("R/analysis.R", encoding = "UTF-8")
 ## Background
 
  - Transmission dynamics of this emerging infectious disease haven't been fully understood 
- 
- - Previous research shows the air quality may influence the virus transmission   [@li_air_2020;@iha_comparative_2016]
+ - Previous research shows the air quality may influence the virus transmission  
  
 ## Methods
 
@@ -71,28 +70,44 @@ source("R/analysis.R", encoding = "UTF-8")
 ```{r include=FALSE}
 require(dygraphs) 
 require(xts) 
+require(tidyverse)
 tcurve2020<-tcurve %>%filter(date2>as.Date("2020-01-01")) %>% filter(date2<as.Date("2020-03-15"))
 diff(tcurve2020$date2) 
 ```
 
 ```{r include=FALSE}
-plot1a<-tcurve2020 %>% select(V1) %>% xts(tcurve2020$date2) %>% dygraph() %>% dyOptions(fillGraph = TRUE) %>% dyRangeSelector()%>%htmlwidgets::saveWidget()
-```
-<iframe seamless src="yourimage.html" width = "600" height="150" frameborder="0"></iframe>
-
-
-```{r fig1, fig.cap="Figure 1: Move out trend from Wuhan"}
-plot1a
+plot1a<-tcurve2020 %>% select(V1) %>% xts(tcurve2020$date2) %>% dygraph() %>% dyOptions(fillGraph = TRUE) %>% dyRangeSelector()
+htmlwidgets::saveWidget(plot1a, file="plot1.html")
 ```
 
+<iframe seamless src="plot1.html" width="1000" height="800" frameborder="0"></iframe>
 
-```{r out.width='100%', fig.height=6, fig2, fig.cap="Figure 2: A comparision of Tianmen and Shiyan"}
-plotly::ggplotly(ptian)
+
+Figure 1. Move out trend from Wuhan. Move the selector at the bottom of figure to explore the trend at date you are interested in. 
+
+
+
+```{r out.width='100%', fig.height=6, fig2, fig.cap="Figure 2. A comparision of Tianmen and Shiyan"}
+tem<-ggplot() + geom_point(data = shiyan, aes(x = time, y = cum_confirm, color = "Shiyan (National Hygienic City)")) + geom_point(data = tianmen, aes(x = time, y = cum_confirm, color = "Tianmen (Non National Hygienic City)")) + labs(y = "Cases",x="Date", color = "Legend") + scale_colour_manual( values=c(`Shiyan (National Hygienic City)` = "red", `Tianmen (Non National Hygienic City)` = "blue"))+
+  geom_line(data = shiyan,aes(x = time, y = cum_confirm),size = 0.8, col="red")+ geom_line(data = tianmen,aes(x = time, y = cum_confirm),size = 0.8, col="blue")+
+  theme( panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank(),
+         panel.background = element_blank(),
+         axis.line = element_line(colour = "black"))+ xlab("Date in 2020") +
+  ylab("Cumulative cases")
+plotly::ggplotly(tem)
 ```
 
 
-```{r out.width='100%', fig.height=6, fig3, fig.cap="Figure 3: A comparision of all cities outside Wuhan"}
-plotly::ggplotly(bp1)
+```{r out.width='100%', fig.height=6, fig3, fig.cap="Figure 3. A comparision of all cities outside Wuhan"}
+tem1<-ggplot() + geom_point(data = shiyan, aes(x = time, y = cum_confirm, color = "Shiyan (National Hygienic City)")) + geom_point(data = tianmen, aes(x = time, y = cum_confirm, color = "Tianmen (Non National Hygienic City)")) + labs(y = "Cases",x="Date", color = "Legend") + scale_colour_manual( values=c(`Shiyan (National Hygienic City)` = "red", `Tianmen (Non National Hygienic City)` = "blue"))+
+  geom_line(data = shiyan,aes(x = time, y = cum_confirm),size = 0.8, col="red")+ geom_line(data = tianmen,aes(x = time, y = cum_confirm),size = 0.8, col="blue")+
+  theme( panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank(),
+         panel.background = element_blank(),
+         axis.line = element_line(colour = "black"))+ xlab("Date in 2020") +
+  ylab("Cumulative cases")
+plotly::ggplotly(tem1)
 ```
 
 # {.col-3}
@@ -120,8 +135,9 @@ plotly::ggplotly(bp1)
 
 ## Contact 
 
-Scan the QR code for this [project's website](https://green-ear-rabbit.github.io/website/) to find more information. 
-
+ - Scan the QR code for this [project's website](https://green-ear-rabbit.github.io/website/) to find more information. 
+ - There is a version of interactive poster, click [here](https://github.com/green-ear-rabbit/Final-poster/blob/master/poster) to view the interactive poster and its source code on github.
+ 
 ```{r fig5, fig.cap=''}
 knitr::include_graphics('image/QR.png')
 ```
@@ -143,7 +159,8 @@ Packages of [tidyverse](https://github.com/tidyverse), [leafletCN](https://githu
 # {.col-2}
 
 ## References
-
+1. Li H, Xu X-L, Dai D-W, Huang Z-Y, Ma Z, Guan Y-J. Air Pollution and temperature are associated with increased COVID-19 incidence: a time series study. International Journal of Infectious Diseases. Published online 2020. doi:10.1016/j.ijid.2020.05.076
+2. Iha Y, Kinjo T, Parrott G, Higa F, Mori H, Fujita J. Comparative epidemiology of influenza A and B viral infection in a subtropical region: a 7-year surveillance in Okinawa, Japan. BMC Infect Dis. 2016;16(1):650-650. doi:10.1186/s12879-016-1978-0
 
 
 
